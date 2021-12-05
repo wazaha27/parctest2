@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="84f976bd-90ba-43fb-b612-01107146148c" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="faa3d55e-7f35-4190-a246-7308bb07810b" >
+		<db:my-sql-connection host="sql6.freemysqlhosting.net" port="3306" user="sql6456062" password="dd3TK5VnpY" database="sql6456062" />
+	</db:config>
+	<flow name="practeat2Flow" doc:id="58da8468-866f-4ce1-96a0-8fbb13a8a6d2" >
+		<http:listener doc:name="Listener" doc:id="7467995a-5d4e-42a6-98bc-87c966fe4842" config-ref="HTTP_Listener_config" path="/pract2"/>
+		<db:select doc:name="Select" doc:id="42731ef2-8947-43e8-8b38-1eb0b9480715" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from agf_test1]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="313c0a2f-2fa3-4f98-8dc6-263c3843333f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
